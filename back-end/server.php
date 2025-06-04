@@ -7,8 +7,8 @@ require_once 'validation.php';
 
 session_start();
 
-$rateLimitMax = 3;
-$rateLimitTime = 30; 
+$rateLimitMax = 1;
+$rateLimitTime = 10; 
 
 if (!isset($_SESSION['limit'])) {
     $_SESSION['limit'] = [
@@ -102,6 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $pdo->commit();
+
+            session_regenerate_id(true);
 
             $_SESSION['token'] = bin2hex(random_bytes(32));
 
