@@ -1,4 +1,5 @@
 <?php
+
 function loadEnv($path)
 {
     if (!file_exists($path)) {
@@ -22,6 +23,7 @@ function loadEnv($path)
     }
 }
 loadEnv(__DIR__ . '/.env');
+
 class Database {
     private $host;
     private $db;

@@ -89,14 +89,14 @@ form.addEventListener('submit', async function (e) {
   const messageBox = document.getElementById('responseMessage')
   messageBox.textContent = '';
     if (result.success) {
-        console.log(result);
         const now = new Date();
         messageBox.style.color = 'green';
         messageBox.textContent = result.message + " at " + now.toString();
         alert("Registration successful : " + result.message);
 
         form.reset();
-
+        titleField.style.display = 'none';
+        
         allInputs.forEach((input) => {
             clearError(input);
         });
@@ -201,7 +201,6 @@ function validatePasswords() {
 function validatePasswordNotExposed(inputElement) {
   const passwordValue = password.value;
   const inputValue = inputElement.value;
-  console.log("Validating input against password:", inputValue, "Password:", passwordValue)
 
   if (inputValue.toLowerCase().includes(passwordValue.toLowerCase()) && passwordValue.length > 0) {
     showError(inputElement, "This field contains your password!");
@@ -215,8 +214,6 @@ function validatePasswordNotExposed(inputElement) {
 function validateText(inputElement) {
   const nameRegex = /^[a-zA-Z' -]+$/;
   const inputValue = inputElement.value.trim();
-
-  console.log("Validating text input:", inputValue);
 
   if (inputValue && !nameRegex.test(inputValue)) {
     showError(inputElement, "Only letters, apostrophes (') and hyphens (-) are allowed.");
