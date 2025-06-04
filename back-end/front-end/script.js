@@ -12,6 +12,8 @@ const title = document.getElementById("title");
 const phone = document.getElementById("phone");
 const extension = document.getElementById("extension");
 
+const email = document.getElementById("email");
+
 userName.addEventListener("input", () => validatePasswordNotExposed(userName));
 
 password.addEventListener("input", validatePasswordStrength);
@@ -24,6 +26,8 @@ title.addEventListener("input", () => validateText(title));
 
 phone.addEventListener("input",() => validateNumbers(phone));
 extension.addEventListener("input",() => validateNumbers(extension));
+
+email.addEventListener("input", () => validatePasswordNotExposed(email));
 
 const titleField = document.getElementById('contactTitle');
 titleField.style.display = 'none';
@@ -65,6 +69,7 @@ form.addEventListener('submit', async function (e) {
   validateNumbers(extension);
 
   validatePasswordNotExposed(userName);
+  validatePasswordNotExposed(email)
 
   if (form.querySelector(".error-message")) {
     hasErrors = true;
@@ -196,6 +201,7 @@ function validatePasswords() {
 function validatePasswordNotExposed(inputElement) {
   const passwordValue = password.value;
   const inputValue = inputElement.value;
+  console.log("Validating input against password:", inputValue, "Password:", passwordValue)
 
   if (inputValue.toLowerCase().includes(passwordValue.toLowerCase()) && passwordValue.length > 0) {
     showError(inputElement, "This field contains your password!");
