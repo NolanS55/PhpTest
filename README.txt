@@ -14,7 +14,7 @@ INSERT INTO account_types (account_type) VALUES ('Individual'), ('Company');
 CREATE TABLE users (
     user_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     account_id INT UNSIGNED NOT NULL,
-    username VARCHAR(50) NOT NULL UNIQUE,
+    username VARCHAR(20) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     full_name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,

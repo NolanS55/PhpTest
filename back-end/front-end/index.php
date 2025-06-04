@@ -33,7 +33,7 @@ if (empty($_SESSION['token'])) {
 
           <div id="accountInfo">
             <label for="username">Username:</label>
-            <input type="text" name="Username" id="username" required />
+            <input type="text" name="Username" id="username" minlength="3" maxlength="20" required />
 
             <label for="password">Password:</label>
             <input type="password" name="Password" id="password" required />
@@ -71,7 +71,7 @@ if (empty($_SESSION['token'])) {
             <input type="tel" name="Phone" id="phone" maxlength="20" />
 
             <label for="extension">Extension (optional):</label>
-            <input type="text" name="Extension" id="extension" />
+            <input type="text" name="Extension" id="extension" maxlength="10"/>
 
             <label for="email">Email:</label>
             <input type="email" name="Email" id="email" required />
@@ -84,7 +84,7 @@ if (empty($_SESSION['token'])) {
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 
 </html>
