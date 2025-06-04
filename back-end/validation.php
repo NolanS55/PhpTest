@@ -13,6 +13,17 @@ class Validator {
 
     public function validateUsername($field) {
         $username = $this->sanitize($this->data[$field]);
+
+        if (strlen($username) < 3 || strlen($username) > 20) {
+            $this->errors[$field] = "Username must be between 3 and 20 characters.";
+        }
+
+        $password = isset($this->data['password']) ? $this->data['password'] : '';
+
+        if ($password !== '' && stripos($username, $password) !== false) {
+            $this->errors[$field] = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+        }
+
         return $username;
     }
 

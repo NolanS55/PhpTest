@@ -7,6 +7,30 @@ require_once 'validation.php';
 
 session_start();
 
+$rateLimitMax = 3;
+$rateLimitTime = 30; 
+
+if (!isset($_SESSION['limit'])) {
+    $_SESSION['limit'] = [
+        'count' => 1,
+        'first_attempt' => time()
+    ];
+} else {
+    $timeSince= time() - $_SESSION['limit']['first_attempt'];
+
+    if ($timeSince < $rateLimitTime) {
+        $_SESSION['limit']['count']++;
+
+        if ($_SESSION['limit']['count'] > $rateLimitMax) {
+            http_response_code(429);
+            die(json_encode(["message" => "You are sending too many requests. Please wait before trying again.","success" => false]));
+        }
+    } else {
+        $_SESSION['limit']['count'] = 1;
+        $_SESSION['limit']['first_attempt'] = time();
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['token']) || $_POST['token'] !== $_SESSION['token']) {
         http_response_code(403);
@@ -79,7 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $pdo->commit();
 
-            echo json_encode(['message' => 'User registered', 'success' => true]);
+            $_SESSION['token'] = bin2hex(random_bytes(32));
+
+            echo json_encode(['message' => 'User registered', 'success' => true, "updatedToken" => $_SESSION['token']]);
         } catch (Exception $e) {
             $pdo->rollBack();
 

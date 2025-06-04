@@ -1,24 +1,31 @@
 const form = document.getElementById("regForm");
 
-const password = document.getElementById("password");
+const userName = document.getElementById("username");
 
+const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirmPassword");
+
 const fullName = document.getElementById("fullName");
+
+const title = document.getElementById("title");
 
 const phone = document.getElementById("phone");
 const extension = document.getElementById("extension");
+
+userName.addEventListener("input", () => validatePasswordNotExposed(userName));
 
 password.addEventListener("input", validatePasswordStrength);
 password.addEventListener("input", validatePasswords);
 confirmPassword.addEventListener("input", validatePasswords);
 
-fullName.addEventListener("input", validateFullName);
-fullName.addEventListener("blur", () => checkEmpty(fullName));
+fullName.addEventListener("input", () => validateText(fullName));
+
+title.addEventListener("input", () => validateText(title));
 
 phone.addEventListener("input",() => validateNumbers(phone));
 extension.addEventListener("input",() => validateNumbers(extension));
 
-const titleField = document.getElementById('contactTitle')
+const titleField = document.getElementById('contactTitle');
 titleField.style.display = 'none';
 
 const allInputs = form.querySelectorAll("input, select");
@@ -28,7 +35,7 @@ allInputs.forEach((input) => {
 
 document.getElementById('accountType').addEventListener('change', function () {
   const label = document.getElementById('fullNameLabel');
-  const titleField = document.getElementById('contactTitle');
+  
 
   if (this.value === 'Company') {
     label.textContent = 'Contact Name:';
@@ -39,7 +46,7 @@ document.getElementById('accountType').addEventListener('change', function () {
   }
 });
 
-document.getElementById('regForm').addEventListener('submit', async function (e) {
+form.addEventListener('submit', async function (e) {
   let hasErrors = false;
   e.preventDefault();
 
@@ -52,9 +59,12 @@ document.getElementById('regForm').addEventListener('submit', async function (e)
 
   validatePasswordStrength()
   validatePasswords();
-  validateFullName();
+  validateText(fullName);
+  validateText(title);
   validateNumbers(phone);
   validateNumbers(extension);
+
+  validatePasswordNotExposed(userName);
 
   if (form.querySelector(".error-message")) {
     hasErrors = true;
@@ -79,10 +89,20 @@ document.getElementById('regForm').addEventListener('submit', async function (e)
         messageBox.style.color = 'green';
         messageBox.textContent = result.message + " at " + now.toString();
         alert("Registration successful : " + result.message);
+
         form.reset();
+
         allInputs.forEach((input) => {
             clearError(input);
         });
+
+        if (result.updatedToken) {
+          const tokenStorage = document.querySelector('input[name="token"]');
+          if (tokenStorage) {
+            tokenStorage.value = result.updatedToken;
+          }
+        }
+
     } else {
         messageBox.style.color = 'red';
         messageBox.textContent = result.message;
@@ -173,12 +193,29 @@ function validatePasswords() {
   }
 }
 
-function validateFullName() {
-  const nameRegex = /^[a-zA-Z' -]+$/;
-  if (fullName.value && !nameRegex.test(fullName.value)) {
-    showError(fullName, "Name can only contain letters, apostrophes ('), and hyphens (-)");
+function validatePasswordNotExposed(inputElement) {
+  const passwordValue = password.value;
+  const inputValue = inputElement.value;
+
+  if (inputValue.toLowerCase().includes(passwordValue.toLowerCase()) && passwordValue.length > 0) {
+    showError(inputElement, "This field contains your password!");
+    return false;
   } else {
-    clearError(fullName);
+    clearError(inputElement);
+    return true;
+  }
+}
+
+function validateText(inputElement) {
+  const nameRegex = /^[a-zA-Z' -]+$/;
+  const inputValue = inputElement.value.trim();
+
+  console.log("Validating text input:", inputValue);
+
+  if (inputValue && !nameRegex.test(inputValue)) {
+    showError(inputElement, "Only letters, apostrophes (') and hyphens (-) are allowed.");
+  } else {
+    clearError(inputElement);
   }
 }
 

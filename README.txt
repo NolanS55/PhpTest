@@ -1,5 +1,9 @@
 DB SET UP:
 
+CREATE DATABASE user_registration;
+
+USE user_registration;
+
 CREATE TABLE account_types (
     account_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     account_type VARCHAR(12) NOT NULL UNIQUE
@@ -35,3 +39,4 @@ CREATE TABLE user_phones (
 );
 
 To run project be in back-end folder and run : php -S localhost:8000 -t .
+Project url should be: http://localhost:8000/front-end/index.php
