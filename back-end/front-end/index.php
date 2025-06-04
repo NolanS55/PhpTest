@@ -52,11 +52,11 @@ if (empty($_SESSION['token'])) {
 
           <div id="personalInfo">
             <label for="fullName" id="fullNameLabel">Full Name:</label>
-            <input type="text" name="FullName" id="fullName" required />
+            <input type="text" name="FullName" id="fullName" required  maxlength="50" />
 
             <div id="contactTitle">
               <label for="title">Contact Title:</label>
-              <input type="text" name="Title" id="title" />
+              <input type="text" name="Title" id="title" maxlength="50"/>
             </div>
           </div>
 
@@ -74,7 +74,7 @@ if (empty($_SESSION['token'])) {
             <input type="text" name="Extension" id="extension" maxlength="10"/>
 
             <label for="email">Email:</label>
-            <input type="email" name="Email" id="email" required />
+            <input type="email" name="Email" id="email"  maxlength="50" required />
           </div>
           <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
           <button type="submit">Register</button>
