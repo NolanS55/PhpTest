@@ -110,6 +110,11 @@ form.addEventListener('submit', async function (e) {
     form.reset();
     titleField.style.display = 'none';
 
+    const label = document.getElementById('fullNameLabel');
+    console.log("label: " + label);
+    label.textContent = 'Full Name:';
+
+
     const minLength = document.getElementById("minLength");
     const uppercase = document.getElementById("uppercase");
     const lowercase = document.getElementById("lowercase");
