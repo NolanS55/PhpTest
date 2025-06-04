@@ -1,28 +1,37 @@
-Step 1: 
+DB SET UP:
 
-CREATE DATABASE user_registration;
-
-Step 2: 
-
-USE user_registration;
-
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    account_type ENUM('Individual', 'Company') NOT NULL,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    full_name VARCHAR(100) NOT NULL,
-    title VARCHAR(50),
-    phone VARCHAR(20) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE account_types (
+    account_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    account_type VARCHAR(12) NOT NULL UNIQUE
 );
 
-Step 3:
+INSERT INTO account_types (account_type) VALUES ('Individual'), ('Company');
 
-Create user to access DB and fill in credentials in PHP code
+CREATE TABLE users (
+    user_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    account_id INT UNSIGNED NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES account_types(account_id)
+);
 
-Step 4:
+CREATE TABLE user_titles (
+    user_id INT UNSIGNED PRIMARY KEY,
+    title VARCHAR(50),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
 
-Run PHP code with php -S localhost:8000
+CREATE TABLE user_phones (
+    phone_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED,
+    country_code VARCHAR(5),
+    phone VARCHAR(20),
+    extension VARCHAR(10),
+    UNIQUE (user_id, phone),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
 
+To run project be in back-end folder and run : php -S localhost:8000 -t .
